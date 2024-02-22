@@ -1,2 +1,1 @@
-# 2024_1_POO
-Projetos realizados na disciplina de POO
+# Repositório da disciplina de POO de TADS - Semestre 2024.1
