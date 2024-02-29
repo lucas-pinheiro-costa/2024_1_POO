@@ -10,22 +10,13 @@ Saída
 Os valores devem ser mostrados na mesma linha, separados por um espaço em branco. 
 Não deve haver espaço após o último valor.
 '''
-
-def fibonacci(n):
-    if n <= 1:
-        return n
-    else:
-        return fibonacci(n-1) + fibonacci(n-2)
-
-# Lendo o valor de N
 N = int(input())
 
-# Imprimindo os N primeiros números da série de Fibonacci
-for i in range(1, N+1):
-    # Se i for igual a N-1 (o último número na sequência), não adicionar espaço extra
-    if i == N:
-        print(fibonacci(i-1), end="")
-    else:
-        print(fibonacci(i-1), end=" ")
+fib1, fib2 = 0, 1
 
-# ERA PRA FUNCIONAR MAS O BEECROWD TÁ DE SACANAGEM
+for i in range(N):
+    if i < N - 1:
+        print(fib1, end=" ")
+    else:
+        print(fib1, end="")
+    fib1, fib2 = fib2, fib1 + fib2
