@@ -6,10 +6,9 @@ A classe deve utilizar os atributos nome, cpf, telefone e nascimento usados no r
 from datetime import datetime
 
 class Paciente:
-
     # Método construtor dos atributos da classe Paciente
     def __init__(self, nome, cpf, telefone, nascimento):
-        self.__nome = nome.capitalize()
+        self.__nome = nome.upper()
         self.__cpf = cpf
         self.__telefone = telefone
         self.__nascimento = datetime.strptime(nascimento, "%d/%m/%Y")
@@ -19,12 +18,17 @@ class Paciente:
 
     # Método idade() serve para retornar um texto com a idade do paciente em anos e meses
     def idade(self):
-        
-        # Implementar o código que calcula a idade do paciente
+        hoje = datetime.today()
+        anos = hoje.year - self.__nascimento.year
+        meses = hoje.month - self.__nascimento.month
+        if meses < 0:
+            anos -= 1
+            meses += 12
+        return f"{anos} anos e {meses} meses."
 
     # Métodos ToString para retornar um texto com os dados do paciente
     def __str__(self):
-        return f"Nome: {self.__nome} \nCPF: {self.__cpf} \nTelefone de contato: {self.__telefone} \nData de nascimento: {self.__nascimento.strftime('%d/%m/%Y')}\n"
+        return f"Nome: {self.__nome}\nCPF: {self.__cpf}\nTelefone de contato: {self.__telefone}\nData de nascimento: {self.__nascimento.strftime('%d/%m/%Y')}"
 
 
 class UI:
@@ -34,11 +38,12 @@ class UI:
         lista_pacientes = []
 
         while True:
-            print("\n1 - Cadastrar um novo paciente")
+            print("\n:::::::::::::::::::::::::::::::::::::::")
+            print("1 - Cadastrar um novo paciente")
             print("2 - Excluir um paciente cadastrado")
             print("3 - Listar todos os pacientes cadastrados")
             print("4 - Exibir dados de um paciente específico")
-            print("5 - Exibir idade de um paciente")
+            print("5 - Exibir a idade de um paciente")
             print("9 - Sair")
 
             operation = input("Escolha uma opção: ")
@@ -56,40 +61,56 @@ class UI:
                 if not lista_pacientes:
                     print("Nenhum paciente cadastrado ainda.")
                     continue
-                print("Pacientes cadastrados:")
+                print("\nPacientes cadastrados:")
                 for i, paciente in enumerate(lista_pacientes):
                     print(f"{i + 1} - {paciente.get_nome()}")
                 try:
-                    index = int(input("Escolha o número do paciente: ")) - 1
+                    index = int(input("\nEscolha o número do paciente: ")) - 1
                     paciente = lista_pacientes[index]
-                    print(f"Deseja excluir o cadastro do paciente '{paciente.get_nome()}'?")
+                    print(f"Deseja excluir o cadastro do paciente '{paciente.get_nome()}'?\t")
                     resposta = input("(S/N): ")
                     if resposta.upper() == 'S':
-                        del lista_pacientes[index]
                         print(f"Cadastro do paciente '{paciente.get_nome()}' excluído com sucesso.")
+                        del lista_pacientes[index]
                     else:
                         print("Operação cancelada.")
                 except (ValueError, IndexError):
                     print("Opção inválida.")
             
             elif operation == '3':  # Listar todos os pacientes cadastrados
-                print("\Pacientes cadastradas:")
-                for i, empresa in enumerate(empresas):
-                    print(f"{i + 1} - {empresa.get_nome()}")
-            
-            elif operation == '4':  # Listar clientes de uma empresa
-                if not empresas:
-                    print("Nenhuma empresa criada ainda.")
+                if not lista_pacientes:
+                    print("Nenhum paciente cadastrado ainda.")
                     continue
-                print("Empresas disponíveis:")
-                for i, empresa in enumerate(empresas):
-                    print(f"{i + 1} - {empresa.get_nome()}")
+                print("\nPacientes cadastrados:")
+                for i, paciente in enumerate(lista_pacientes):
+                    print(f"{i + 1} - {paciente.get_nome()}")
+            
+            elif operation == '4':  # Exibir dados de um paciente específico
+                if not lista_pacientes:
+                    print("Nenhum paciente cadastrado ainda.")
+                    continue
+                print("\nPacientes cadastrados:")
+                for i, paciente in enumerate(lista_pacientes):
+                    print(f"{i + 1} - {paciente.get_nome()}")
                 try:
-                    index = int(input("Escolha o número da empresa: ")) - 1
-                    empresa = empresas[index]
-                    print(f"\nClientes da empresa '{empresa.get_nome()}':")
-                    for cliente in empresa.listar():
-                        print(cliente)
+                    index = int(input("\nEscolha o número do paciente: ")) - 1
+                    paciente = lista_pacientes[index]
+                    print(f"Seguem abaixo os dados do paciente '{paciente.get_nome()}':")
+                    print(paciente)
+                except (ValueError, IndexError):
+                    print("Opção inválida.")
+                    
+            elif operation == '5':  # Exibir a idade de um paciente
+                if not lista_pacientes:
+                    print("Nenhum paciente cadastrado ainda.")
+                    continue
+                print("\nPacientes cadastrados:")
+                for i, paciente in enumerate(lista_pacientes):
+                    print(f"{i + 1} - {paciente.get_nome()}")
+                try:
+                    index = int(input("\nEscolha o número do paciente: ")) - 1
+                    paciente = lista_pacientes[index]
+                    print(f"Idade do paciente '{paciente.get_nome()}': {paciente.idade()}")
                 except (ValueError, IndexError):
                     print("Opção inválida.")
             
@@ -99,7 +120,6 @@ class UI:
             else:
                 print("Opção inválida.")
 
-        print("Fim do programa.")
-
+        print("\nFim do programa.")
 
 UI.main()
