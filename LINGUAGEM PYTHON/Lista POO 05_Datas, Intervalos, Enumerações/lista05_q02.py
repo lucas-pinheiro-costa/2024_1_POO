@@ -5,33 +5,38 @@ Escrever a classe Boleto e a enumeração Pagamento de acordo com o diagrama UML
 ############### O CÓDIGO ABAIXO FOI REUTILIZADO DA QUESTÃO 01, TEM QUE FAZER ALTERAÇÕES
 
 from datetime import datetime
+from enum import Enum
 
 class Boleto:
     # Método construtor dos atributos da classe Boleto
-    def __init__(self, codBarras, dataEmissao, dataVencimento, dataPagto, valorBoleto, valorPago):
+    def __init__(self, codBarras, dataEmissao, dataVencimento, dataPagto, valorBoleto):
         self.__codBarras = codBarras
         self.__dataEmissao = datetime.strptime(dataEmissao, "%d/%m/%Y")
         self.__dataVencimento = datetime.strptime(dataVencimento, "%d/%m/%Y")
         self.__dataPagto = datetime.strptime(dataPagto, "%d/%m/%Y")
         self.__valorBoleto = valorBoleto
+        
+    # Método Pagar registra o valor pago para o boleto que pode ser menor ou igual ao valor do boleto.
+    def pagar(self, valorPago):
         self.__valorPago = valorPago
-
-    def get_codBarras(self):
-        return self.__codBarras
-
-    # Método idade() serve para retornar um texto com a idade do Boleto em anos e meses
-    def idade(self):
-        hoje = datetime.today()
-        anos = hoje.year - self.__dataEmissao.year
-        meses = hoje.month - self.__dataEmissao.month
-        if meses < 0:
-            anos -= 1
-            meses += 12
-        return f"{anos} anos e {meses} meses."
+        
+    # Método Situação retorna a situação de pagamento do boleto.
+    def situacao(self):
+        if self.__valorPago is None:
+            return Pagamento.EmAberto
+        elif self.__valorPago < self.__valorBoleto:
+            return Pagamento.PagoParcial
+        else:
+            return Pagamento.Pago
 
     # Métodos ToString para retornar um texto com os dados do Boleto
     def __str__(self):
-        return f"codBarras: {self.__codBarras}\nCPF: {self.__cpf}\nTelefone de contato: {self.__telefone}\nData de dataEmissao: {self.__dataEmissao.strftime('%d/%m/%Y')}"
+        return f"O boleto possui os seguintes dados:\n\tCódigo de barra: {self.__codBarras}\n\tData de emissão: {self.__dataEmissao.strftime('%d/%m/%Y')}\n\tData de vencimento: {self.__dataVencimento.strftime('%d/%m/%Y')}\n\tData do pagamento: {self.__dataPagto.strftime('%d/%m/%Y')}\n\tValor do boleto: R$ {self.__valorBoleto}\n\tValor pago: R$ {self.__valorPago if self.__valorPago is not None else 'N/A'}\n\tSituação do pagamento: {self.situacao().name}"
+    
+class Pagamento(Enum):
+    EmAberto = 1
+    PagoParcial = 2
+    Pago = 3
 
 
 class UI:
