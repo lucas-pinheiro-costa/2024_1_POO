@@ -42,15 +42,14 @@ class Pagamento(Enum):
 class UI:
     @staticmethod
     def main():
-        print("\n\tAPLICATIVO DE CADASTRO DE BoletoS")      # Alterar esse título
+        print("\n\tINFORMES DE BOLETO BANCÁRIO")
 
         while True:
             print("\n:::::::::::::::::::::::::::::::::::::::")
-            print("1 - Cadastrar um novo Boleto")
-            print("2 - Excluir um Boleto cadastrado")
-            print("3 - Listar todos os Boletos cadastrados")
-            print("4 - Exibir dados de um Boleto específico")
-            print("5 - Exibir a idade de um Boleto")
+            print("1 - Cadastrar um novo boleto")
+            print("2 - Realizar o pagamento de um boleto")
+            print("3 - Verificar a situação do boleto")
+            print("4 - Verificar os dados do boleto")
             print("9 - Sair")
 
             operation = input("Escolha uma opção: ")
@@ -104,20 +103,6 @@ class UI:
                     Boleto = lista_Boletos[index]
                     print(f"Seguem abaixo os dados do Boleto '{Boleto.get_codBarras()}':")
                     print(Boleto)
-                except (ValueError, IndexError):
-                    print("Opção inválida.")
-                    
-            elif operation == '5':  # Exibir a idade de um Boleto
-                if not lista_Boletos:
-                    print("Nenhum Boleto cadastrado ainda.")
-                    continue
-                print("\nBoletos cadastrados:")
-                for i, Boleto in enumerate(lista_Boletos):
-                    print(f"{i + 1} - {Boleto.get_codBarras()}")
-                try:
-                    index = int(input("\nEscolha o número do Boleto: ")) - 1
-                    Boleto = lista_Boletos[index]
-                    print(f"Idade do Boleto '{Boleto.get_codBarras()}': {Boleto.idade()}")
                 except (ValueError, IndexError):
                     print("Opção inválida.")
             
